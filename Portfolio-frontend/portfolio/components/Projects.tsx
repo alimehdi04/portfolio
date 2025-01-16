@@ -2,7 +2,7 @@
 import { client } from '@/sanity'; // Sanity client for fetching data
 import { PortableTextBlock } from '@portabletext/types'; // Type for rich text content
 import { PortableText } from '@portabletext/react'; // Component to render rich text
-import Link from 'next/link';
+import Image from 'next/image';
 
 // Define the Project interface to type-check our data
 interface Project {
@@ -58,50 +58,60 @@ export default async function Projects() {
         {/* Map through projects array to create project cards */}
         {projects.map((project) => (
           <div
-            key={project._id}
-            className="p-4 border rounded-lg shadow-sm hover:shadow-md transition-shadow"
-          >
-            {/* Optional chaining (?.) to safely access nested image properties */}
-            {project.image?.asset?.url && (
-              <img
-                src={project.image.asset.url}
-                alt={project.title}
-                className="w-full h-48 object-cover rounded-md"
-              />
-            )}
-            <h2 className="text-xl font-semibold mt-4">{project.title}</h2>
-            {/* Format the creation date */}
-            <p className="text-sm text-gray-500 mt-1">
-              {new Date(project.createdAt).toLocaleDateString()}
-            </p>
-            {/* Render rich text description with 3-line clamp */}
-            <div className="text-gray-700 mt-2 line-clamp-3">
-              <PortableText value={project.description} />
+          key={project._id}
+          className="p-6 border rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200"
+        >
+          {/* Conditional rendering for project image with fallback */}
+          {project.image?.asset?.url ? (
+            <Image
+              src={project.image.asset.url}
+              alt={project.title}
+              width={192}  
+              height={192}
+              className="w-full h-48 object-cover rounded-md mb-4"
+            />  
+          ) : (
+            // Fallback div when no image is available
+            <div className="w-full h-48 bg-gray-200 rounded-md mb-4 flex items-center justify-center">
+              <span className="text-gray-500">No Image Available</span>
             </div>
-            {/* Links section with conditional rendering */}
-            <div className="flex items-center gap-4 mt-4">
-              {project.projectLink && (
-                <Link
-                  href={project.projectLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  Live Demo
-                </Link>
-              )}
-              {project.githubLink && (
-                <Link
-                  href={project.githubLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  GitHub
-                </Link>
-              )}
-            </div>
+          )}
+
+          <h2 className="text-xl font-semibold mt-4">{project.title}</h2>
+          {/* Format the creation date */}
+          <p className="text-sm text-gray-500 mt-1">
+            {new Date(project.createdAt).toLocaleDateString()}
+          </p>
+          {/* Render rich text description with 3-line clamp */}
+          <div className="text-gray-400 mt-2 line-clamp-3">
+            <PortableText value={project.description} />
           </div>
+          {/* Project links section with conditional rendering */}
+          <div className="flex items-center gap-4 mt-4">
+            {project.projectLink && (
+              <a
+                href={project.projectLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+                aria-label={`Live demo for ${project.title}`}
+              >
+                Live Demo
+              </a>
+            )}
+            {project.githubLink && (
+              <a
+                href={project.githubLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+                aria-label={`GitHub repository for ${project.title}`}
+              >
+                GitHub
+              </a>
+            )}
+          </div>
+        </div>
         ))}
       </div>
     </div>

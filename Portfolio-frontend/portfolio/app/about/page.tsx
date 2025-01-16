@@ -96,7 +96,7 @@ const AboutPage = async () => {
                   {exp.endDate.isPresent ? (
                     <span> - Present</span>
                   ) : (
-                    <span> - {new Date(exp.endDate.date).toLocaleDateString()}</span>
+                    <span> - {exp.endDate.date ? new Date(exp.endDate.date).toLocaleDateString() : "N/A"}</span>
                   )}
                 </p>
               </div>
