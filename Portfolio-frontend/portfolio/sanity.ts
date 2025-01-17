@@ -4,5 +4,6 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-12-23', // use current date in YYYY-MM-DD format
-  useCdn: true, // if you want to enable draft content in development, set this to false
+  useCdn: false, 
+  // staleWhileRevalidate: true
 })
