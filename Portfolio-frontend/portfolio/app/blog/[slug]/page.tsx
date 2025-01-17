@@ -3,6 +3,8 @@ import { PortableTextBlock } from '@portabletext/types';
 import { PortableText } from '@portabletext/react';
 import Image from 'next/image';
 
+export const revalidate = 60;
+
 // Define the Blog interface
 interface Blog {
   _id: string;
@@ -41,7 +43,11 @@ async function getBlogData(slug: string): Promise<Blog | null> {
     }
   }`;
 
-  const result = await client.fetch<Blog | null>(query, { slug });
+  const result = await client.fetch<Blog | null>(
+    query, 
+    { slug },
+    { next: { revalidate: 60 } }
+  );
   return result;
 }
 
@@ -88,7 +94,11 @@ const BlogPost = async ({ params }: BlogPostParams) => {
 
 // Generate static params for dynamic routes
 export async function generateStaticParams() {
-  const slugs = await client.fetch<string[]>(`*[_type == "blog"].slug.current`);
+  const slugs = await client.fetch<string[]>(
+    `*[_type == "blog"].slug.current`,
+    {},
+    { next: { revalidate: 60 } }
+  );
   return slugs.map(slug => ({ params: { slug } }));
 }
 

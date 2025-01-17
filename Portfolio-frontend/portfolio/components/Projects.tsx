@@ -1,3 +1,4 @@
+export const revalidate = 60
 // Import required dependencies
 import { client } from '@/sanity'; // Sanity client for fetching data
 import { PortableTextBlock } from '@portabletext/types'; // Type for rich text content
@@ -44,7 +45,7 @@ export async function getProjects(): Promise<Project[]> {
     createdAt
   }`;
 
-  return await client.fetch<Project[]>(query);
+  return await client.fetch<Project[]>(query, {}, { next: { revalidate: 60 } });
 }
 
 export default async function Projects() {

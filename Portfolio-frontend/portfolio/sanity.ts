@@ -5,5 +5,6 @@ export const client = createClient({
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-12-23', // use current date in YYYY-MM-DD format
   useCdn: false, 
-  // staleWhileRevalidate: true
+  // staleWhileRevalidate: true,
+  token: process.env.NEXT_PUBLIC_SANITY_API_TOKEN,
 })

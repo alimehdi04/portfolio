@@ -1,3 +1,4 @@
+export const revalidate = 60
 import { client } from '@/sanity'
 import { PortableTextBlock } from '@portabletext/types'
 import Link from 'next/link'
@@ -44,7 +45,7 @@ async function getData() {
     }
   }`
 
-  return await client.fetch<Blog[]>(query)
+  return await client.fetch<Blog[]>(query, {}, { next: { revalidate: 60 } })
 }
 
 // this page will show list of all blogs

@@ -1,3 +1,4 @@
+export const revalidate = 60
 import { client } from '@/sanity';
 import AnimationRoles from './AnimationRoles';
 import Link from 'next/link';
@@ -5,7 +6,7 @@ import Link from 'next/link';
 // this will get the roles that will run on animations from 'profile' schema
 const getRoles = async () => {
   const query = `*[_type == "profile"][0].roles`;
-  return await client.fetch<string[]>(query);
+  return await client.fetch<string[]>(query, {}, { next: { revalidate: 60 } });
 };
 
 export default async function Hero() {
